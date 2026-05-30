@@ -2,7 +2,6 @@ import { motion } from 'framer-motion';
 import { Play, Pause } from 'lucide-react';
 import { RadioEpisode } from '../../data/radioEpisodes';
 import { useAudioPlayer } from '../../contexts/AudioPlayerContext';
-import { useRef } from 'react';
 
 interface SuggestedCarouselProps {
   title: string;
@@ -11,17 +10,6 @@ interface SuggestedCarouselProps {
 
 export default function SuggestedCarousel({ title, episodes }: SuggestedCarouselProps) {
   const { currentEpisode, playEpisode } = useAudioPlayer();
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  const scroll = (direction: 'left' | 'right') => {
-    if (containerRef.current) {
-      const scrollAmount = 320;
-      containerRef.current.scrollBy({
-        left: direction === 'left' ? -scrollAmount : scrollAmount,
-        behavior: 'smooth'
-      });
-    }
-  };
 
   return (
     <section className="py-12 bg-gradient-to-br from-gray-50 to-white">
@@ -32,36 +20,16 @@ export default function SuggestedCarousel({ title, episodes }: SuggestedCarousel
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="flex items-center justify-between mb-6"
+          className="flex items-center mb-6"
         >
           <div className="flex items-center gap-3">
             <span className="text-2xl">💡</span>
             <h2 className="text-xl font-bold text-gray-900">{title}</h2>
           </div>
-
-          <div className="flex items-center gap-2">
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              onClick={() => scroll('left')}
-              className="w-9 h-9 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-600 hover:bg-gray-50 transition-colors"
-            >
-              ←
-            </motion.button>
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              onClick={() => scroll('right')}
-              className="w-9 h-9 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-600 hover:bg-gray-50 transition-colors"
-            >
-              →
-            </motion.button>
-          </div>
         </motion.div>
 
         {/* Horizontal scroll */}
         <div
-          ref={containerRef}
           className="flex gap-5 overflow-x-auto pb-4 scrollbar-hide"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
