@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Mic, ChevronRight } from 'lucide-react';
 import { radioEpisodes } from '../data/radioEpisodes';
 import { useAudioPlayer } from '../contexts/AudioPlayerContext';
-import { fetchArticles, fetchArticlesByCategory, Article, fetchMostRead } from '../lib/supabase';
+import { fetchArticles, fetchArticlesByCategory, fetchMostRead, Article } from '../lib/supabase';
 import { newsArticles as fallbackArticles, getLatestByCategory as fallbackGetLatestByCategory, Article as StaticArticle } from '../data/newsData';
 
 type DisplayArticle = Article | StaticArticle;
@@ -24,6 +24,8 @@ export default function HomePage() {
   const displayArticles: DisplayArticle[] = articles.length > 0 ? articles : fallbackArticles.slice(0, 20);
   const displayCityNews: DisplayArticle[] = cityNews.length > 0 ? cityNews : fallbackGetLatestByCategory('/thanh-pho', 4);
   const displayWardNews: DisplayArticle[] = wardNews.length > 0 ? wardNews : fallbackGetLatestByCategory('/168-phuong-xa', 4);
+  const displayLifeNews = fallbackGetLatestByCategory('/doi-song', 4);
+  const displayEntNews = fallbackGetLatestByCategory('/giai-tri', 6);
 
   useEffect(() => {
     loadData();
@@ -98,7 +100,7 @@ export default function HomePage() {
             to="/admin"
             className="text-sm text-gray-500 hover:text-[#0057B8] font-medium px-4 py-2 rounded-lg hover:bg-gray-100 transition-colors"
           >
-            Quản lý bài viết
+            Quan ly bai viet
           </Link>
         </div>
 
@@ -163,7 +165,7 @@ export default function HomePage() {
                     to={`/bai-viet/${sliderNews[index]?.id}`}
                     className="flex items-center gap-2 text-white font-bold hover:text-blue-300 transition-all group w-fit"
                   >
-                    Đọc tiếp <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    Doc tiep <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </Link>
                 </motion.div>
               </div>
@@ -186,7 +188,7 @@ export default function HomePage() {
           <section className="mb-12 bg-gradient-to-r from-blue-50 to-orange-50 rounded-2xl p-6">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-3 h-3 bg-orange-500" />
-              <h2 className="text-lg font-bold uppercase tracking-tight">Đọc nhiều nhất</h2>
+              <h2 className="text-lg font-bold uppercase tracking-tight">Doc nhieu nhat</h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
               {mostRead.map((article, idx) => (
@@ -202,7 +204,7 @@ export default function HomePage() {
                     />
                   </div>
                   <h3 className="mt-2 font-bold text-sm line-clamp-2 group-hover:text-[#0057B8]">{article.title}</h3>
-                  <span className="text-xs text-gray-500 mt-1">{formatViews(article.views)} lượt xem</span>
+                  <span className="text-xs text-gray-500 mt-1">{formatViews(article.views)} luot xem</span>
                 </Link>
               ))}
             </div>
@@ -214,7 +216,7 @@ export default function HomePage() {
           <div className="col-span-12 lg:col-span-8">
             <div className="flex items-center gap-3 mb-6">
               <div className="w-3 h-3 bg-[#0057B8]" />
-              <h2 className="text-xl font-bold uppercase tracking-tight">Thành phố hôm nay</h2>
+              <h2 className="text-xl font-bold uppercase tracking-tight">Thanh pho hom nay</h2>
               <div className="h-px bg-gray-200 flex-1" />
             </div>
             {displayCityNews.map((art) => (
@@ -264,10 +266,10 @@ export default function HomePage() {
           <div className="flex items-center justify-between gap-3 mb-6">
             <div className="flex items-center gap-3 flex-1">
               <div className="w-3 h-3 bg-[#0057B8]" />
-              <h2 className="text-xl font-bold uppercase tracking-tight">168 Phường - Xã</h2>
+              <h2 className="text-xl font-bold uppercase tracking-tight">168 Phuong - Xa</h2>
               <div className="h-px bg-gray-200 flex-1" />
             </div>
-            <Link to="/168-phuong-xa" className="text-sm text-[#0057B8] font-bold hover:underline whitespace-nowrap">Xem tất cả</Link>
+            <Link to="/168-phuong-xa" className="text-sm text-[#0057B8] font-bold hover:underline whitespace-nowrap">Xem tat ca</Link>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {displayWardNews.map((art) => (
@@ -285,6 +287,100 @@ export default function HomePage() {
                   <span>-</span>
                   <span>{formatViews(art.views)} luot xem</span>
                 </div>
+              </Link>
+            ))}
+          </div>
+        </section>
+      </main>
+
+      {/* 6. GÓC NHÌN (DARK SECTION) */}
+      <section className="bg-[#000B2B] w-full py-16">
+        <div className="max-w-[1280px] mx-auto px-6 text-white">
+          <div className="flex items-center gap-3 mb-10">
+            <h2 className="text-2xl font-black uppercase italic tracking-tighter">Goc nhin chuyen gia</h2>
+            <div className="h-px bg-white/20 flex-1" />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-12">
+            {displayLifeNews.slice(0, 2).map((art) => (
+              <Link key={art.id} to={`/bai-viet/${art.id}`} className="group block">
+                <div className="w-full h-[380px] bg-gray-800 rounded-2xl mb-5 overflow-hidden">
+                   <img src={art.image} className="w-full h-full object-cover transition-transform group-hover:scale-105 duration-700" alt={art.title} />
+                </div>
+                <h3 className="font-bold text-2xl group-hover:text-blue-400 transition-colors leading-snug">{art.title}</h3>
+              </Link>
+            ))}
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+            {displayLifeNews.slice(0, 3).map((art) => (
+              <Link key={art.id} to={`/bai-viet/${art.id}`} className="group block">
+                <div className="w-full h-[240px] bg-gray-800 rounded-xl mb-4 overflow-hidden">
+                   <img src={art.image} className="w-full h-full object-cover transition-transform group-hover:scale-105" alt={art.title} />
+                </div>
+                <h3 className="font-bold text-lg group-hover:text-blue-400 line-clamp-2">{art.title}</h3>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 7. ĐỜI SỐNG */}
+      <main className="max-w-[1280px] mx-auto px-6 py-20">
+        <section>
+          <div className="flex items-center gap-3 justify-between mb-8">
+            <div className="flex items-center gap-3 flex-1">
+              <div className="w-3 h-3 bg-[#0057B8]" />
+              <h2 className="text-xl font-bold uppercase tracking-tight">Doi song</h2>
+              <div className="h-px bg-gray-200 flex-1" />
+            </div>
+            <Link to="/doi-song" className="text-sm text-[#0057B8] font-bold hover:underline">Xem tat ca</Link>
+          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-stretch">
+          {displayLifeNews.length > 0 && (
+            <div className="lg:col-span-7">
+              <Link to={`/bai-viet/${displayLifeNews[0].id}`} className="group block h-full">
+                <div className="overflow-hidden rounded-2xl shadow-xl">
+                    <img src={displayLifeNews[0].image} className="w-full h-[450px] object-cover group-hover:scale-105 duration-700" alt={displayLifeNews[0].title} />
+                </div>
+                <h3 className="mt-6 text-2xl font-black group-hover:text-[#0057B8] leading-tight transition-colors">{displayLifeNews[0].title}</h3>
+              </Link>
+            </div>
+          )}
+            <div className="lg:col-span-5 flex flex-col justify-between gap-6">
+              {displayLifeNews.slice(1, 4).map((art) => (
+                <Link key={art.id} to={`/bai-viet/${art.id}`} className="flex gap-5 group h-full">
+                  <img src={art.image} className="w-32 md:w-40 h-full object-cover rounded-xl flex-shrink-0" alt={art.title} />
+                  <div className="flex flex-col justify-center">
+                    <h4 className="font-bold text-base group-hover:text-[#0057B8] transition-colors line-clamp-2">{art.title}</h4>
+                    <p className="text-xs text-slate-500 mt-2 line-clamp-2">{art.excerpt}</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      </main>
+
+      {/* 8. GIẢI TRÍ */}
+      <main className="max-w-[1280px] mx-auto px-6 py-10 pb-20">
+        <section>
+          <div className="flex items-center justify-between gap-3 mb-10">
+            <div className="flex items-center gap-3 flex-1">
+              <div className="w-3 h-3 bg-[#0057B8]" />
+              <h2 className="text-xl font-bold uppercase tracking-tight">Giai tri</h2>
+              <div className="h-px bg-gray-200 flex-1" />
+            </div>
+            <Link to="/giai-tri" className="text-sm text-[#0057B8] font-bold hover:underline">Xem tat ca</Link>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+            {displayEntNews.map((art) => (
+              <Link key={art.id} to={`/bai-viet/${art.id}`} className="group block space-y-4">
+                <div className="overflow-hidden rounded-2xl shadow-sm">
+                  <img src={art.image} className="w-full h-60 object-cover transition-transform duration-500 group-hover:scale-105" alt={art.title} />
+                </div>
+                <h3 className="font-bold text-lg group-hover:text-[#0057B8] transition-colors leading-snug line-clamp-2">{art.title}</h3>
+                <p className="text-sm text-gray-500 line-clamp-2 leading-relaxed">
+                    {art.excerpt || "Kham pha nhung goc nhin van hoa, su kien giai tri dac sac nhat dien ra tai thanh pho."}
+                </p>
               </Link>
             ))}
           </div>
