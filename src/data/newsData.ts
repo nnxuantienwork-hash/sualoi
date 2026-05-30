@@ -910,6 +910,12 @@ export const getLatestByCategory = (slug: string, limit: number) => {
     .slice(0, limit);
 };
 
+export const getArticlesByCategory = (slug: string) => {
+  return newsArticles
+    .filter((a) => a.categorySlug === slug)
+    .sort((a, b) => (b.createdAt ?? 0) - (a.createdAt ?? 0));
+};
+
 export const getMostRead = () => {
   return [...newsArticles].sort((a, b) => b.views - a.views).slice(0, 5);
 };

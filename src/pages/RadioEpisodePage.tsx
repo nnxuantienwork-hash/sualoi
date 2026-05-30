@@ -11,9 +11,7 @@ export default function RadioEpisodePage() {
     currentEpisode,
     isPlaying,
     currentTime,
-    duration,
     playEpisode,
-    togglePlay,
   } = useAudioPlayer();
 
   const currentSections = radioSections.slice(1, 3);
@@ -42,7 +40,6 @@ export default function RadioEpisodePage() {
   }
 
   const isCurrentEpisode = currentEpisode?.id === episode.id;
-  const playingProgress = isCurrentEpisode && duration > 0 ? (currentTime / duration) * 100 : 0;
 
   const renderStars = (rating: number) => {
     const fullStars = Math.floor(rating);

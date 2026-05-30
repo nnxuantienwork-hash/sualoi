@@ -1,5 +1,5 @@
 import { useState, MouseEvent } from 'react';
-import { Play, Pause, SkipBack, SkipForward, Volume2, VolumeX, Share2, RotateCcw, Minimize2 } from 'lucide-react';
+import { Play, Pause, SkipBack, SkipForward, Volume2, VolumeX, Share2, RotateCcw } from 'lucide-react';
 import { useAudioPlayer } from './AudioPlayer';
 import { formatDuration } from '../data/radioData';
 

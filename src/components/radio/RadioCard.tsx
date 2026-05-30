@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Play, Pause, Headphones, Clock, Users } from 'lucide-react';
+import { Play, Pause, Clock, Users } from 'lucide-react';
 import { RadioEpisode } from '../../data/radioEpisodes';
 import { useAudioPlayer } from '../../contexts/AudioPlayerContext';
 import { formatDuration, formatListenerCount } from '../../data/radioEpisodes';
